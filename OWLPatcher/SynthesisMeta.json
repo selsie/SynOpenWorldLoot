@@ -1,7 +1,7 @@
 {
   "Nickname": "OWLPatcher",
   "Visibility": "Visible",
-  "OneLineDescription": "Consistency Patcher for Open World Loot",
+  "OneLineDescription": "Consistency Patcher for Open World Loot - with output file splitting",
   "LongDescription": "",
   "PreferredAutoVersioning": "Default",
   "RequiredMods": []
