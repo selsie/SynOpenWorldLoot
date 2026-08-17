@@ -13,10 +13,28 @@ namespace ListMaker
     {
         public static Task<int> Main(string[] args)
         {
+            args = EnsureSplitIfMaxMastersExceeded(args);
+        
             return SynthesisPipeline.Instance
                 .SetTypicalOpen(GameRelease.SkyrimSE, "OpenWorldLootPatch.esp")
                 .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
                 .Run(args);
+        }
+        
+        // Workaround für Synthesis-GUI-Bug: Die "Split Files if Max Masters Exceeded"
+        // Profileinstellung wird bei CLI-Patchern nicht als Flag durchgereicht.
+        
+        private static string[] EnsureSplitIfMaxMastersExceeded(string[] args)
+        {
+            if (args.Any(a => a.Equals("--SplitIfMaxMastersExceeded", StringComparison.OrdinalIgnoreCase)))
+            {
+                return args;
+            }
+        
+            var newArgs = args.ToList();
+            newArgs.Add("--SplitIfMaxMastersExceeded");
+            newArgs.Add("true");
+            return newArgs.ToArray();
         }
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
